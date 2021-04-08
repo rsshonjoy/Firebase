@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import './App.css';
 import firebaseConfig from "./firebaseConfig";
 import './Style.css';
 
@@ -42,35 +43,61 @@ function App() {
       console.log(error);
     });
   }
+
+  const handleSignOut = () => {
+    firebase.auth().signOut().then(() => {
+      const signOutUer = {
+        isSignIn: false,
+        name: '',
+        email: '',
+        photo: ''
+      }
+      setUser(signOutUer)
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
   return (
-    <div>
-      <h3>Welcome, {user.name}</h3>
-      <p>Your email: {user.email}</p>
-      <img src={user.photo} alt=""/>
+    <div className="App">
+
+      {
+        user.isSignIn ? 
+          <button onClick={handleSignOut}>Sign Out</button>: <button onClick={handleSignIn}>Sign In</button>
+      }
+
+      {
+        user.isSignIn && 
+        <div>
+          <h3>Welcome, {user.name}</h3>
+          <p>Your email: {user.email}</p>
+          <img src={user.photo} alt=""/>
+        </div>
+      }
+      <br/><br/>
       <form className="box" action="index.html" method="post" onSubmit={handleSubmit(onSubmit)}>
-      <h1>Login</h1>
-      <input type="text" name="" placeholder="Username" />
-      <input type="password" name="" placeholder="Password" />
-      <input type="submit" name="" value="Login" />
-      <p className="social-text">Or Sign up with social platforms</p>
-      <div className="social-media">
-        <button className="social-icon" onClick={handleSignIn}>
-          <i className="fab fa-google"></i>
-        </button>
-        <button className="social-icon" onClick={handleSignIn}>
-          <i className="fab fa-facebook-f"></i>
-        </button>
-        <button className="social-icon">
-          <i className="fab fa-twitter"></i>
-        </button>
-        <button className="social-icon">
-          <i className="fab fa-linkedin-in"></i>
-        </button>
-      </div>
-      <div className="link">
-        <a href="#">Forgot password?</a> or <a href="#">Sign Up</a>
-      </div>
-    </form>
+          <h1>Login</h1>
+          <input type="text" name="" placeholder="Username" />
+          <input type="password" name="" placeholder="Password" />
+          <input type="submit" name="" value="Login" />
+          <p className="social-text">Or Sign up with social platforms</p>
+          <div className="social-media">
+            <button className="social-icon" onClick={handleSignIn}>
+              <i className="fab fa-google"></i>
+            </button>
+            <button className="social-icon" onClick={handleSignIn}>
+              <i className="fab fa-facebook-f"></i>
+            </button>
+            <button className="social-icon">
+              <i className="fab fa-twitter"></i>
+            </button>
+            <button className="social-icon">
+              <i className="fab fa-linkedin-in"></i>
+            </button>
+          </div>
+          <div className="link">
+            <a href="#">Forgot password?</a> or <a href="#">Sign Up</a>
+          </div>
+        </form>
     </div>
   );
 }

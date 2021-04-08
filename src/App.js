@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import firebaseConfig from "./firebaseConfig";
 import './Style.css';
@@ -11,7 +12,15 @@ if (!firebase.apps.length) {
 }
 
 function App() {
-  var provider = new firebase.auth.GoogleAuthProvider();
+
+  const [user, setUser] = useState({
+    isSignIn: false,
+    name: '',
+    email: '',
+    photo: ''
+  })
+
+  const provider = new firebase.auth.GoogleAuthProvider();
   
   const { handleSubmit } = useForm();
   const onSubmit = data => console.log(data);
@@ -20,14 +29,25 @@ function App() {
     firebase.auth()
     .signInWithPopup(provider)
     .then((result) => {
+      const {displayName, email, photoURL} = result.user;
       console.log(result);
-      
+      const signInUser = {
+        isSignIn: true,
+        name: displayName,
+        email: email,
+        photo: photoURL
+      }
+      setUser(signInUser)
     }).catch((error) => {
       console.log(error);
     });
   }
   return (
-    <form className="box" action="index.html" method="post" onSubmit={handleSubmit(onSubmit)}>
+    <div>
+      <h3>Welcome, {user.name}</h3>
+      <p>Your email: {user.email}</p>
+      <img src={user.photo} alt=""/>
+      <form className="box" action="index.html" method="post" onSubmit={handleSubmit(onSubmit)}>
       <h1>Login</h1>
       <input type="text" name="" placeholder="Username" />
       <input type="password" name="" placeholder="Password" />
@@ -51,6 +71,7 @@ function App() {
         <a href="#">Forgot password?</a> or <a href="#">Sign Up</a>
       </div>
     </form>
+    </div>
   );
 }
 

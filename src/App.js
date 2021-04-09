@@ -153,7 +153,7 @@ function App() {
           { newUser && <input type="text" name="name" onBlur={handleBlur} placeholder="Name" required />}
           <input type="text" name="email" onBlur={handleBlur} placeholder="Username" required />
           <input type="password" name="password" onBlur={handleBlur} placeholder="Password" required />
-          <input type="submit" name="" value="Login" />
+          <input type="submit" name="" value={newUser ? 'Sign Up' : 'Sign In'} />
           <p className="social-text">Or Sign up with social platforms</p>
           <div className="social-media">
             <button className="social-icon" onClick={handleGoogleSignIn}>

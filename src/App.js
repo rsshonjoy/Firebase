@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import './App.css';
 import firebaseConfig from "./firebaseConfig";
 import './Style.css';
@@ -22,8 +22,8 @@ function App() {
     photo: ''
   })
   
-  const { handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  // const { handleSubmit } = useForm();
+  // const onSubmit = data => console.log(data);
 
 
   // email and password auth
@@ -42,6 +42,15 @@ function App() {
       newUserInfo[e.target.name] = e.target.value;
       setUser(newUserInfo)
     }
+  }
+
+  const handleSubmit = (e) => {
+    console.log(user.email, user.password);
+    if (user.email && user.password) {
+      console.log('submitted');
+      
+    }
+    e.preventDefault();
   }
 
   
@@ -99,7 +108,7 @@ function App() {
       <h3>Welcome, {user.name}</h3>
       <p>Your email: {user.email}</p>
       <p>Your password: {user.password}</p>
-      <form className="box" action="index.html" method="post" onSubmit={handleSubmit(onSubmit)}>
+      <form className="box" action="index.html" method="post" onSubmit={handleSubmit}>
           <h1>Login</h1>
           <input type="text" name="email" onBlur={handleBlur} placeholder="Username" required />
           <input type="password" name="password" onBlur={handleBlur} placeholder="Password" required />

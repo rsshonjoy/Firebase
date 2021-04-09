@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useState } from "react";
-// import { useForm } from "react-hook-form";
 import './App.css';
 import firebaseConfig from "./firebaseConfig";
 import './Style.css';
@@ -21,10 +20,6 @@ function App() {
     password: '',
     photo: ''
   })
-  
-  // const { handleSubmit } = useForm();
-  // const onSubmit = data => console.log(data);
-
 
   // email and password auth
   const handleBlur = (e) => {
@@ -45,10 +40,20 @@ function App() {
   }
 
   const handleSubmit = (e) => {
-    console.log(user.email, user.password);
     if (user.email && user.password) {
-      console.log('submitted');
-      
+      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      .then((res) => {
+        const newUserInfo = {...user}
+        newUserInfo.error = '';
+        newUserInfo.success = true;
+        setUser(newUserInfo)
+      })
+      .catch((error) => {
+        const newUserInfo = {...user}
+        newUserInfo.error = error.message;
+        newUserInfo.success = false;
+        setUser(newUserInfo);
+      });
     }
     e.preventDefault();
   }
@@ -80,7 +85,9 @@ function App() {
         isSignIn: false,
         name: '',
         email: '',
-        photo: ''
+        photo: '',
+        error: '',
+        success: false
       }
       setUser(signOutUer)
     }).catch((error) => {
@@ -131,6 +138,8 @@ function App() {
           <div className="link">
             <a href="#">Forgot password?</a> or <a href="#">Sign Up</a>
           </div>
+          <p style={{color: 'red'}}>{user.error}</p>
+          { user.success && <p style={{color: 'green'}}>User created Successfully</p> }
         </form>
     </div>
   );

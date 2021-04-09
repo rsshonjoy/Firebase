@@ -91,7 +91,8 @@ body {
   padding: 20px;
   text-align: center;
 }
-.link a {
+.link a,
+label {
   text-decoration: none;
   color: #aaa;
   font-size: 15px;

@@ -18,6 +18,7 @@ function App() {
     isSignIn: false,
     name: '',
     email: '',
+    password: '',
     photo: ''
   })
   
@@ -27,15 +28,19 @@ function App() {
 
   // email and password auth
   const handleBlur = (e) => {
-    console.log(e.target.value);
+    let isFormValid = true;
     if (e.target.name === 'email') {
-      const isEmailValid = /\S+@\S+\.\S+/.test(e.target.value)
-      console.log("🚀 ~ file: App.js ~ line 30 ~ handleBlur ~ isEmailValid", isEmailValid)
+      isFormValid = /\S+@\S+\.\S+/.test(e.target.value)
     }
     if (e.target.name === 'password') {
       const isPasswordValid = e.target.value.length > 5;
       const passwordHasValid = /\d{1}/.test(e.target.value);
-      console.log("🚀 ~ file: App.js ~ line 35 ~ handleBlur ~ isPasswordValid", isPasswordValid && passwordHasValid)
+      isFormValid= isPasswordValid && passwordHasValid
+    }
+    if (isFormValid) {
+      const newUserInfo = {...user};
+      newUserInfo[e.target.name] = e.target.value;
+      setUser(newUserInfo)
     }
   }
 
@@ -91,6 +96,9 @@ function App() {
       <br/><br/>
 
       {/* Login form */}
+      <h3>Welcome, {user.name}</h3>
+      <p>Your email: {user.email}</p>
+      <p>Your password: {user.password}</p>
       <form className="box" action="index.html" method="post" onSubmit={handleSubmit(onSubmit)}>
           <h1>Login</h1>
           <input type="text" name="email" onBlur={handleBlur} placeholder="Username" required />
